@@ -24,17 +24,21 @@ set cursorline
 
 syntax on
 set noswapfile
+	
 
+imap jj <Esc>
 
 "save
-
 imap <C-s> <ESC>:w<CR>i<Right>
 map <C-s> :W<CR>
 
 "cool brackets
-imap { {<CR><CR>}<Up><Tab><Tab>
-imap ( (<Space><Space>)<Left><Left>
+imap { {}<Left>
+imap ( ()<Left>
+imap {<Enter> {<CR><CR>}<Left>
 
 "undo redo
 imap <C-z> <Esc>:undo<CR>i<Right>
 imap <C-y> <Esc>:redo<CR>i<Right>
+
+

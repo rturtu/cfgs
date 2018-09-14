@@ -1,5 +1,9 @@
-sudo rm vimrc
-sudo rm bashrc
-sudo cp ~/.bashrc bashrc
-sudo cp ~/.vimrc vimrc
+if [ -e vimrc ]; then
+	rm vimrc;
+fi;
+if [ -e bashrc ]; then
+	rm bashrc;
+fi;
+cp ~/.bashrc bashrc
+cp ~/.vimrc vimrc
 

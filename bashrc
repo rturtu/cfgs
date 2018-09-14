@@ -14,7 +14,6 @@ function title(){
 stty -ixon #disable C-s software flow control XON/XOFF
 
 
-
 #compiles .c .cpp
 function comp(){
 	if [ -e $1 ]; then
@@ -165,7 +164,7 @@ if ! shopt -oq posix; then
 fi
 
 if [ -x /usr/games/cowsay -a -x /usr/games/fortune ]; then
-	fortune | cowsay -f tux
+	fortune -o | cowsay -f tux
 fi
 
 title 4Chan

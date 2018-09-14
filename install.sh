@@ -15,3 +15,4 @@ git submodule update --init --recursive
 cd ~/.vim/bundle/YouCompleteMe
 ./install.py --clang-completer
 
+sudo apt-get install g++
