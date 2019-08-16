@@ -1,3 +1,5 @@
+"Plugins:
+"https://github.com/nvie/vim-flake8
 "set shellcmdflag=-ic
 set nocompatible              " be iMproved, required
 set wildmenu
