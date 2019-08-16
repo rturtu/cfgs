@@ -9,9 +9,11 @@ let mapleader = ","
 
 set incsearch
 set hlsearch
+set smarttab
 set tabstop=4
 set shiftwidth=4
-set softtabstop=4
+set softtabstop=0
+set expandtab
 set smartindent
 set autoindent
 set relativenumber number
@@ -34,29 +36,24 @@ augroup END
 
 syntax on
 
-"move line up or down
-nmap <A-j> mz:m+<CR>`z
-nmap <A-k> mz:m-2<CR>`z
-
-"save
-imap <C-s> <ESC>:w<CR>i<Right>
-map <C-s> :w<CR>
+nmap <Space><Space> i<Space><Esc>l
 
 "cool brackets
 imap { {}<Left>
 imap {} {}
-imap ( (<Space><Space>)<Left><Left>
+imap ( ()<Left>
 imap () ()
-imap [ [<Space><Space>]<Left><Left>
+imap [ []<Left>
 imap [] []
 imap {<Enter> {<CR>}<Esc>ko
+imap (<Enter> (<CR>)<Esc>ko
+imap [<Enter> [<CR>]<Esc>ko
+
+"can't see me, my time is now
+:set listchars=eol:⏎,tab:␉·,trail:␠,nbsp:⎵
 
 "appending is always fun on the end of the line
 nmap a A
-
-"undo redo
-imap <C-z> <Esc>:undo<CR>i<Right>
-imap <C-y> <Esc>:redo<CR>i<Right>
 
 "compile
 map <Space>c :w<CR>:!comp %<CR>
@@ -74,3 +71,54 @@ let g:netrw_winsize = 25
 map <leader>e :Vexplore<CR>
 map <leader>d :bd<CR>
 map <leader>b :w<CR>:buffer 
+
+" Linters
+autocmd BufWritePost *.py call flake8#Flake8()
+
+"f expanded to multiple lines the hard way
+nmap f1 /1<CR>
+nmap f2 /2<CR>
+nmap f3 /3<CR>
+nmap f4 /4<CR>
+nmap f5 /5<CR>
+nmap f6 /6<CR>
+nmap f7 /7<CR>
+nmap f8 /8<CR>
+nmap f9 /9<CR>
+nmap f0 /0<CR>
+nmap fq /q<CR>
+nmap fw /w<CR>
+nmap fe /e<CR>
+nmap fr /r<CR>
+nmap ft /t<CR>
+nmap fy /y<CR>
+nmap fu /u<CR>
+nmap fi /i<CR>
+nmap fo /o<CR>
+nmap fp /p<CR>
+nmap fa /a<CR>
+nmap fs /s<CR>
+nmap fd /d<CR>
+nmap ff /f<CR>
+nmap fg /g<CR>
+nmap fh /h<CR>
+nmap fj /j<CR>
+nmap fk /k<CR>
+nmap fl /l<CR>
+nmap fz /z<CR>
+nmap fx /x<CR>
+nmap fc /c<CR>
+nmap fv /v<CR>
+nmap fb /b<CR>
+nmap fn /n<CR>
+nmap fm /m<CR>
+nmap f= /=<CR>
+nmap f{ /{<CR>
+nmap f} /}<CR>
+nmap f( /(<CR>
+nmap f) /)<CR>
+nmap f' /'<CR>
+nmap f[ /[<CR>
+nmap f] /]<CR>
+nmap f" /"<CR>
+nmap <leader>n :nohl<CR>
