@@ -20,6 +20,16 @@ set smartindent
 set autoindent
 set relativenumber number
 set ruler
+set statusline^=%{coc#status()}
+"autocomplete closing tag
+
+" persistent undo
+set undofile
+set undodir=~/.vim/undodir
+
+"
+"who searches inside node modules?
+set wildignore+=**/node_modules/**
 
 colorscheme desert
 set t_Co=256
@@ -38,7 +48,8 @@ augroup END
 
 syntax on
 
-nmap <Space><Space> i<Space><Esc>l
+inoremap <Esc> <Esc><Esc>
+
 
 "cool brackets
 imap { {}<Left>
@@ -59,68 +70,83 @@ nmap a A
 
 "compile
 map <Space>c :w<CR>:!comp %<CR>
-map <Space>r :w<CR>:!python3 ui.py<CR>
+map <Space>r :w<CR>:!run %<CR>
 
 "registers
 map sr :reg<CR>
 
+let NERDTreeIgnore = ['\.pyc$']
 "who needs NERDTree?
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
 let g:netrw_winsize = 25
-map <leader>e :Vexplore<CR>
-map <leader>d :bd<CR>
-map <leader>b :w<CR>:buffer 
 
 " Linters
-autocmd BufWritePost *.py call flake8#Flake8()
+" autocmd BufWritePost *.py call flake8#Flake8()
 
 "f expanded to multiple lines the hard way
-nmap f1 /1<CR>
-nmap f2 /2<CR>
-nmap f3 /3<CR>
-nmap f4 /4<CR>
-nmap f5 /5<CR>
-nmap f6 /6<CR>
-nmap f7 /7<CR>
-nmap f8 /8<CR>
-nmap f9 /9<CR>
-nmap f0 /0<CR>
-nmap fq /q<CR>
-nmap fw /w<CR>
-nmap fe /e<CR>
-nmap fr /r<CR>
-nmap ft /t<CR>
-nmap fy /y<CR>
-nmap fu /u<CR>
-nmap fi /i<CR>
-nmap fo /o<CR>
-nmap fp /p<CR>
-nmap fa /a<CR>
-nmap fs /s<CR>
-nmap fd /d<CR>
-nmap ff /f<CR>
-nmap fg /g<CR>
-nmap fh /h<CR>
-nmap fj /j<CR>
-nmap fk /k<CR>
-nmap fl /l<CR>
-nmap fz /z<CR>
-nmap fx /x<CR>
-nmap fc /c<CR>
-nmap fv /v<CR>
-nmap fb /b<CR>
-nmap fn /n<CR>
-nmap fm /m<CR>
-nmap f= /=<CR>
-nmap f{ /{<CR>
-nmap f} /}<CR>
-nmap f( /(<CR>
-nmap f) /)<CR>
-nmap f' /'<CR>
-nmap f[ /[<CR>
-nmap f] /]<CR>
-nmap f" /"<CR>
 nmap <leader>n :nohl<CR>
+map <leader>e :NERDTreeToggle<CR>
+" Closing buffers
+map <leader>d :BD<CR>
+map <leader>D :bd<CR>
+map <leader>b :w<CR>:buffer 
+" Navigate buffers
+nnoremap <Tab> :bn<CR>
+nnoremap <S-Tab> :bp<CR>
+" Replace global without confirmation
+" Replace global with confirmation
+map <leader>r :%s//g<Left><Left>
+map <leader>R :%s//gc<Left><Left>
+map <leader>f :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
+map <leader>F :FZF<CR>
+
+" Teleport between buffers at lightning speed
+
+
+"Plugins
+call plug#begin()
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'nvie/vim-flake8'
+Plug 'scrooloose/nerdtree'
+Plug 'mxw/vim-jsx'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'tpope/vim-surround'
+Plug 'qpkorr/vim-bufkill'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'lervag/vimtex'
+Plug 'feix760/vim-javascript-gf'
+
+call plug#end()
+let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-emmet']
+
+"airline config
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols_branch = ''
+let g:airline_symbols_readonly = ''
+let g:airline_symbols_linenr = ''
+
+
+
+:function ReactGF()
+:   let w = expand("<cword>")
+:   let x = -1
+:   let y = 0
+:   while x < y
+:        x = y
+:        y = search(w)
+:   endwhile
+:   echo y
+:endfunction
+
+nmap <leader>q :call ReactGF()<Enter>
+nmap <leader>a #$hhhgfn:nohl<CR>
+
