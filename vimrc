@@ -23,11 +23,21 @@ set ruler
 set statusline^=%{coc#status()}
 "autocomplete closing tag
 
+" Copy to system clipboard
+set clipboard+=unnamed
+set clipboard+=unnamedplus
+
 " persistent undo
 set undofile
 set undodir=~/.vim/undodir
 
-"
+" persistent cursor, marks and registers
+autocmd BufReadPost *
+  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+  \ |   exe "normal! g`\""
+  \ | endif
+
+
 "who searches inside node modules?
 set wildignore+=**/node_modules/**
 
@@ -100,7 +110,7 @@ nnoremap <S-Tab> :bp<CR>
 " Replace global with confirmation
 map <leader>r :%s//g<Left><Left>
 map <leader>R :%s//gc<Left><Left>
-map <leader>f :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
+" map <leader>f :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
 map <leader>F :FZF<CR>
 
 " Teleport between buffers at lightning speed
@@ -120,10 +130,25 @@ Plug 'qpkorr/vim-bufkill'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'lervag/vimtex'
-Plug 'feix760/vim-javascript-gf'
-
+Plug 'eugen0329/vim-esearch'
+Plug 'prettier/vim-prettier', {'do': 'npm install'}
+Plug 'peitalin/vim-jsx-typescript'
+"Plug 'Quramy/tsuquyomi'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+Plug 'Shougo/vimproc.vim'
+Plug 'zivyangll/git-blame.vim'
 call plug#end()
+
+nnoremap <leader>s :<C-u>call gitblame#echo()<CR>
+
 let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-emmet']
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
+let g:coc_disable_startup_warning = 1
+let g:tsuquyomi_use_local_typescript = 0
+
+nnoremap <C-]> :TSDef<CR>
 
 "airline config
 let g:airline_left_sep = ''
@@ -135,18 +160,24 @@ let g:airline_symbols_readonly = ''
 let g:airline_symbols_linenr = ''
 
 
+nnoremap <C-W>O :call MaximizeToggle()<CR>
+nnoremap <C-W>o :call MaximizeToggle()<CR>
+nnoremap <C-W><C-O> :call MaximizeToggle()<CR>
 
-:function ReactGF()
-:   let w = expand("<cword>")
-:   let x = -1
-:   let y = 0
-:   while x < y
-:        x = y
-:        y = search(w)
-:   endwhile
-:   echo y
-:endfunction
+function! MaximizeToggle()
+  if exists("s:maximize_session")
+    exec "source " . s:maximize_session
+    call delete(s:maximize_session)
+    unlet s:maximize_session
+    let &hidden=s:maximize_hidden_save
+    unlet s:maximize_hidden_save
+  else
+    let s:maximize_hidden_save = &hidden
+    let s:maximize_session = tempname()
+    set hidden
+    exec "mksession! " . s:maximize_session
+    only
+  endif
+endfunction
 
-nmap <leader>q :call ReactGF()<Enter>
-nmap <leader>a #$hhhgfn:nohl<CR>
-
+set mouse=
